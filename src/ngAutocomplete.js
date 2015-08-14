@@ -34,7 +34,8 @@ angular.module( "ngAutocomplete", [])
       scope: {
         ngModel: '=',
         options: '=?',
-        details: '=?'
+        details: '=?',
+          selectFn: '=?'
       },
 
       link: function(scope, element, attrs, controller) {
@@ -92,6 +93,11 @@ angular.module( "ngAutocomplete", [])
 
                 scope.details = result;
 
+                  // Notify that a choice has been selected
+                  if (scope.selectFn) {
+                      scope.$eval(scope.selectFn);
+                  }
+
                 controller.$setViewValue(element.val());
               });
             }
@@ -103,7 +109,7 @@ angular.module( "ngAutocomplete", [])
           }
         })
 
-        //function to get retrieve the autocompletes first result using the AutocompleteService 
+        //function to get retrieve the autocompletes first result using the AutocompleteService
         var getPlace = function(result) {
           var autocompleteService = new google.maps.places.AutocompleteService();
           if (result.name.length > 0){
